@@ -1,6 +1,7 @@
 import java.net.*;
 import java.io.*;
 import org.json.JSONObject;
+import java.util.Scanner; 
 
 public class Server {
     private ServerSocket serverSocket;
@@ -13,10 +14,13 @@ public class Server {
         this.clientSocket = this.serverSocket.accept();
         this.out = new PrintWriter(this.clientSocket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
+        Scanner scanInput = new Scanner(System.in);
+        
         JSONObject msg = new JSONObject(this.in.readLine());
         System.out.println(msg);
-        msg.put("server", "server");
+        msg.put("msg", scanInput.nextLine());
         this.out.println(msg.toString());
+        // } while(msg.isNull("msg"));
     }
 
     public void stop() throws IOException {

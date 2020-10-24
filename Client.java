@@ -1,6 +1,7 @@
 import java.net.*;
 import java.io.*;
 import org.json.JSONObject;
+import java.util.Scanner; 
 
 public class Client {
     private Socket clientSocket;
@@ -33,8 +34,10 @@ public class Client {
     public static void main(String[] args) {
 	    Client client = new Client();
 	    try {
-			client.startConnection("127.0.0.1", 8080);
-            JSONObject response = client.sendMessage("hello from client");
+            client.startConnection("127.0.0.1", 8080);
+            Scanner scanInput = new Scanner(System.in);
+            String msg = scanInput.nextLine();
+            JSONObject response = client.sendMessage(msg);
             System.out.println(response);
         } catch (UnknownHostException e) {
 			e.printStackTrace();
