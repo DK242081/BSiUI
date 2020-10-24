@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import org.json.JSONObject;
 
 public class Server {
     private ServerSocket serverSocket;
@@ -12,9 +13,10 @@ public class Server {
         this.clientSocket = this.serverSocket.accept();
         this.out = new PrintWriter(this.clientSocket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
-        String greeting = this.in.readLine();
-        System.out.println(greeting);
-        out.println("hello form server");
+        JSONObject msg = new JSONObject(this.in.readLine());
+        System.out.println(msg);
+        msg.put("server", "server");
+        this.out.println(msg.toString());
     }
 
     public void stop() throws IOException {

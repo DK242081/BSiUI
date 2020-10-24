@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import org.json.JSONObject;
 
 public class Client {
     private Socket clientSocket;
@@ -12,10 +13,11 @@ public class Client {
         this.in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
     }
 
-    public String sendMessage(String msg) throws IOException {
-        this.out.println(msg);
-        String response = this.in.readLine();
-        return response;
+    public JSONObject sendMessage(String msg) throws IOException {
+        JSONObject test =  new JSONObject();
+        test.put("msg", msg);
+        this.out.println(test.toString());
+        return new JSONObject(this.in.readLine());
     }
 
     public void stopConnection() {
@@ -32,7 +34,7 @@ public class Client {
 	    Client client = new Client();
 	    try {
 			client.startConnection("127.0.0.1", 8080);
-            String response = client.sendMessage("hello from client");
+            JSONObject response = client.sendMessage("hello from client");
             System.out.println(response);
         } catch (UnknownHostException e) {
 			e.printStackTrace();

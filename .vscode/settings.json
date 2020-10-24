@@ -1,0 +1,36 @@
+{
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "/home/dk/Downloads/**/*.jar",
+            "/home/dk/Desktop/laboratoria/1/**/*.jar"
+        ],
+        "exclude": [
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/jfr.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/security/policy/limited/US_export_policy.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/security/policy/unlimited/US_export_policy.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/charsets.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/ext/cldrdata.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/ext/dnsns.jar",
+            "/home/dk/Downloads/jdk8u265-b01/lib/dt.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/ext/jaccess.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/jsse.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/security/policy/unlimited/local_policy.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/security/policy/limited/local_policy.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/ext/localedata.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/management-agent.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/ext/nashorn.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/resources.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/rt.jar",
+            "/home/dk/Downloads/jdk8u265-b01/lib/sa-jdi.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/ext/sunec.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/ext/sunjce_provider.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/ext/sunpkcs11.jar",
+            "/home/dk/Downloads/jdk8u265-b01/lib/tools.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/ext/zipfs.jar",
+            "/home/dk/Downloads/jdk8u265-b01/lib/jconsole.jar",
+            "/home/dk/Downloads/jdk8u265-b01/jre/lib/jce.jar",
+            "/home/dk/Downloads/json-20200518.jar"
+        ]
+    }
+}
