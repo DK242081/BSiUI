@@ -15,7 +15,11 @@ public class Encryptor {
             case NONE:
                 return msg;
             case XOR:
-                return msg;
+                String encryptedMsg = "";
+                for (int i = 0; i < msg.length(); i++) {
+                    encryptedMsg = encryptedMsg + Character.toString(msg.charAt(i) ^ (byte)(this.key % 128)); 
+                }
+                return encryptedMsg;
             case CEZAR:
                 return msg;
             default:
@@ -28,7 +32,11 @@ public class Encryptor {
             case NONE:
                 return msg;
             case XOR:
-                return msg;
+                String decryptedMsg = "";
+                for (int i = 0; i < msg.length(); i++) {
+                    decryptedMsg = decryptedMsg + Character.toString(msg.charAt(i) ^ (byte)(this.key % 128)); 
+                }
+                return decryptedMsg;
             case CEZAR:
                 return msg;
             default:
