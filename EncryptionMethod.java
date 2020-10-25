@@ -2,12 +2,11 @@
 /**
  * Available encryption methods between
  * client and server: 
- * <p>
+ * <ul>
  * {@link #NONE},
  * {@link #XOR},
  * {@link #CESAR},
  * 
- * @author Dominik Kinastowski
  */
 public enum EncryptionMethod {
     NONE("none"), XOR("xor"), CESAR("cesar");
