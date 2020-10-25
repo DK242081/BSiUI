@@ -5,12 +5,12 @@
  * <p>
  * {@link #NONE},
  * {@link #XOR},
- * {@link #CEZAR},
+ * {@link #CESAR},
  * 
  * @author Dominik Kinastowski
  */
 public enum EncryptionMethod {
-    NONE("none"), XOR("xor"), CEZAR("cezar");
+    NONE("none"), XOR("xor"), CESAR("cesar");
 
     String value;
 
