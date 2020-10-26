@@ -58,9 +58,10 @@ public class ClientHandler extends Thread {
         JSONObject jsonMsg;
         if (msg.matches("encryption:.+")) {
             jsonMsg = new JSONObject().put("encryption", msg.split(":")[1]);
-            if (jsonMsg.get("encryption") == "xor") {
+            System.out.println(msg.split(":")[1]);
+            if (jsonMsg.getString("encryption").equals("xor")) {
                 this.encryptor.setMethod(EncryptionMethod.XOR);
-            } else if (jsonMsg.get("encryption") == "cesar") {
+            } else if (jsonMsg.getString("encryption").equals("cesar")) {
                 this.encryptor.setMethod(EncryptionMethod.CESAR);
             } else {
                 this.encryptor.setMethod(EncryptionMethod.NONE);
@@ -75,9 +76,10 @@ public class ClientHandler extends Thread {
     public String receiveMessage() throws JSONException, IOException {
         JSONObject jsonMsg = new JSONObject(this.in.readLine());
         if (jsonMsg.has("encryption")) {
-            if (jsonMsg.get("encryption") == "xor") {
+            System.out.println(jsonMsg.get("encryption"));
+            if (jsonMsg.getString("encryption").equals("xor")) {
                 this.encryptor.setMethod(EncryptionMethod.XOR);
-            } else if (jsonMsg.get("encryption") == "cesar") {
+            } else if (jsonMsg.getString("encryption").equals("cesar")) {
                 this.encryptor.setMethod(EncryptionMethod.CESAR);
             } else {
                 this.encryptor.setMethod(EncryptionMethod.NONE);
