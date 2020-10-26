@@ -7,9 +7,8 @@ public class Server {
     public void start(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
         while(true){
-            new ClientHandler(serverSocket.accept()).start();;
+            new ClientHandler(serverSocket.accept()).start();
         }
-        // stop();
     }
 
     public void stop() throws IOException {

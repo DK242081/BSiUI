@@ -9,6 +9,7 @@ public class Client {
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
+    private Encryptor encryptor;
 
     public void startConnection(String ip, int port) throws UnknownHostException, IOException {
         this.clientSocket = new Socket(ip, port);
@@ -21,24 +22,48 @@ public class Client {
         this.out.println(jsonSendMsg.toString());
         JSONObject jsonReceivedMsg = new JSONObject(this.in.readLine());
         long a = 6;
-        long p = (int)jsonReceivedMsg.get("p");
+        long p = (int) jsonReceivedMsg.get("p");
         long g = (int) jsonReceivedMsg.get("g");
         jsonSendMsg = new JSONObject().put("a", Math.pow(g, a) % p);
         this.out.println(jsonSendMsg.toString());
-        long B = (int)new JSONObject(this.in.readLine()).get("b");
+        long B = (int) new JSONObject(this.in.readLine()).get("b");
         long s = (long) Math.pow(B, a) % p;
+        this.encryptor.setKey(s);
     }
 
     public String sendMessage(String msg) {
-        JSONObject jsonMsg = new JSONObject().put("msg", msg).put("from", "Mark");
+        JSONObject jsonMsg;
+        if (msg.matches("encryption:.+")) {
+            jsonMsg = new JSONObject().put("encryption", msg.split(":")[1]);
+            if (jsonMsg.get("encryption") == "xor") {
+                this.encryptor.setMethod(EncryptionMethod.XOR);
+            } else if (jsonMsg.get("encryption") == "cesar") {
+                this.encryptor.setMethod(EncryptionMethod.CESAR);
+            } else {
+                this.encryptor.setMethod(EncryptionMethod.NONE);
+            }
+        } else {
+            jsonMsg = new JSONObject().put("msg", this.encryptor.encrypt(msg)).put("from", "Mark");
+        }
         this.out.println(jsonMsg.toString());
         return msg;
     }
 
     public String receiveMessage() throws JSONException, IOException {
         JSONObject jsonMsg = new JSONObject(this.in.readLine());
-        System.out.println(jsonMsg.getString("from") + ": " + jsonMsg.getString("msg"));
-        return jsonMsg.getString("msg");
+        if (jsonMsg.has("encryption")) {
+            if (jsonMsg.get("encryption") == "xor") {
+                this.encryptor.setMethod(EncryptionMethod.XOR);
+            } else if (jsonMsg.get("encryption") == "cesar") {
+                this.encryptor.setMethod(EncryptionMethod.CESAR);
+            } else {
+                this.encryptor.setMethod(EncryptionMethod.NONE);
+            }
+            System.out.println("encryption changed to " + this.encryptor.getMethod().value);
+            return "encryption";
+        }
+        System.out.println(jsonMsg.getString("from") + ": " + this.encryptor.decrypt(jsonMsg.getString("msg")));
+        return this.encryptor.decrypt(jsonMsg.getString("msg"));
     }
 
     public void stopConnection() {
@@ -50,20 +75,26 @@ public class Client {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) {
         Client client = new Client();
         try {
             client.startConnection("127.0.0.1", 8080);
+            client.encryptor = new Encryptor();
             client.diffieHellman();
             Scanner scanInput = new Scanner(System.in);
-            System.out.print("me: ");
-            client.sendMessage(scanInput.nextLine());
-            while (client.receiveMessage() != "") {
-                System.out.print("me: ");
-                if (client.sendMessage(scanInput.nextLine()) == "") {
+            System.out.println("===========================================================");
+            System.out.println(
+                    "To set encryption send msg in format \"encryption:method\" \nsupported methods: none, xor, cesar.");
+            System.out.println("To close chat send empty message.");
+            System.out.println("===========================================================");
+            do {
+                String input = scanInput.nextLine();
+
+                if (client.sendMessage(input) == "") {
                     break;
                 }
-            }
+            } while (client.receiveMessage() != "");
             scanInput.close();
             client.stopConnection();
         } catch (UnknownHostException e) {

@@ -12,12 +12,21 @@ public class Encryptor {
     }
 
     /**
+     * Getter for encryption method
+     * 
+     * @return encryption method attribute
+     */
+    public EncryptionMethod getMethod() {
+        return this.method;
+    }
+
+    /**
      * Setter for key
      * 
      * @param newKye new key value
      */
-    public void setKey(int newKey) {
-        this.key = newKey;
+    public void setKey(long s) {
+        this.key = (int) s;
     }
 
     /**
@@ -61,7 +70,8 @@ public class Encryptor {
     }
 
     /**
-     * Method for encrypting/decrypting string using XOR method and key from object attribute
+     * Method for encrypting/decrypting string using XOR method and key from object
+     * attribute
      * 
      * @param msg string to be encrypted/decrypted
      * @return encrypted/decrypted string accordingly
@@ -74,12 +84,11 @@ public class Encryptor {
         return encryptedMsg;
     }
 
-
     /**
      * Method for encrypting string using Cesar cypher and key from object attribute
      * 
      * @param msg string to be encrypted
-     * @return encrypted string 
+     * @return encrypted string
      */
     private String CesarEncrypt(String msg) {
         String encryptedMsg = "";
@@ -97,12 +106,11 @@ public class Encryptor {
         return encryptedMsg;
     }
 
-
     /**
      * Method for decrypting string using Cesar cypher and key from object attribute
      * 
      * @param msg string to be decrypted
-     * @return decrypted string 
+     * @return decrypted string
      */
     private String CesarDecrypt(String msg) {
         String decryptedMsg = "";
