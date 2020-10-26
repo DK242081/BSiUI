@@ -96,9 +96,7 @@ public class Client {
             System.out.println("To close chat send empty message.");
             System.out.println("===========================================================");
             do {
-                String input = scanInput.nextLine();
-
-                if (client.sendMessage(input) == "") {
+                if (client.sendMessage(scanInput.nextLine()) == "") {
                     break;
                 }
             } while (client.receiveMessage() != "");
