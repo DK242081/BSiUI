@@ -3,17 +3,18 @@ import java.io.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.Scanner; 
+import java.util.Scanner;
 
 public class Client {
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
 
-    public void startConnection(String ip, int port)  throws UnknownHostException, IOException{
+    public void startConnection(String ip, int port) throws UnknownHostException, IOException {
         this.clientSocket = new Socket(ip, port);
         this.out = new PrintWriter(this.clientSocket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
+
     }
 
     public String sendMessage(String msg) {
@@ -30,33 +31,55 @@ public class Client {
 
     public void stopConnection() {
         try {
-			this.in.close();
+            this.in.close();
             this.out.close();
             this.clientSocket.close();
         } catch (IOException e) {
-			e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
+    public void diffieHellman() throws JSONException, IOException {
+        JSONObject jsonSendMsg = new JSONObject().put("request", "keys");
+        this.out.println(jsonSendMsg.toString());
+        JSONObject jsonReceivedMsg = new JSONObject(this.in.readLine());
+        long a = 6;
+        System.out.println("a " + a);
+        long p = (int)jsonReceivedMsg.get("p");
+        System.out.println("p " + p);
+        long g = (int) jsonReceivedMsg.get("g");
+        System.out.println("g " + g);
+        jsonSendMsg = new JSONObject().put("a", Math.pow(g, a) % p);
+        System.out.println("g^a " + Math.pow(g, a));
+        System.out.println("g^a mod p " + Math.pow(g, a) % p);
+        this.out.println(jsonSendMsg.toString());
+        long B = (int)new JSONObject(this.in.readLine()).get("b");
+        System.out.println("B " + B);
+        long s = (long) Math.pow(B, a) % p;
+        System.out.println("client secret: " + s);
+    }
+
     public static void main(String[] args) {
-	    Client client = new Client();
-	    try {
+        Client client = new Client();
+        try {
             client.startConnection("127.0.0.1", 8080);
+            client.diffieHellman();
             Scanner scanInput = new Scanner(System.in);
             System.out.print("me: ");
             client.sendMessage(scanInput.nextLine());
             while (client.receiveMessage() != "") {
                 System.out.print("me: ");
-                if(client.sendMessage(scanInput.nextLine()) == ""){
+                if (client.sendMessage(scanInput.nextLine()) == "") {
                     break;
                 }
             }
             scanInput.close();
             client.stopConnection();
         } catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-        };
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ;
     }
 }
