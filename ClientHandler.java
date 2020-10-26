@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.Scanner;
 
 import org.json.JSONException;
@@ -23,7 +24,7 @@ public class ClientHandler extends Thread {
         try {
             this.out = new PrintWriter(this.clientSocket.getOutputStream(), true);
             this.in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
-            this.encryptor = new Encryptor();
+            this.encryptor = new Encryptor(EncryptionMethod.NONE);
             this.diffieHellman();
             this.scanInput = new Scanner(System.in);
             while (receiveMessage() != "") {
@@ -67,7 +68,9 @@ public class ClientHandler extends Thread {
                 this.encryptor.setMethod(EncryptionMethod.NONE);
             }
         } else {
-            jsonMsg = new JSONObject().put("msg", this.encryptor.encrypt(msg)).put("from", "Mark");
+            jsonMsg = new JSONObject()
+                    .put("msg", Base64.getEncoder().encodeToString(this.encryptor.encrypt(msg).getBytes()))
+                    .put("from", "Mark");
         }
         this.out.println(jsonMsg.toString());
         return msg;
@@ -87,7 +90,8 @@ public class ClientHandler extends Thread {
             System.out.println("encryption changed to " + this.encryptor.getMethod().value);
             return "encryption";
         }
-        System.out.println(jsonMsg.getString("from") + ": " + this.encryptor.decrypt(jsonMsg.getString("msg")));
+        System.out.print(jsonMsg.getString("from") + ": ");
+        System.out.println(new String(Base64.getDecoder().decode(this.encryptor.decrypt(jsonMsg.getString("msg")))));
         return this.encryptor.decrypt(jsonMsg.getString("msg"));
     }
 }

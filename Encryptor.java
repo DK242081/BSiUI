@@ -2,6 +2,10 @@ public class Encryptor {
     private EncryptionMethod method;
     private int key;
 
+    public Encryptor (EncryptionMethod method) {
+        this.method = method;
+    }
+
     /**
      * Setter for encryption method
      * 

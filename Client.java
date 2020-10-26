@@ -3,6 +3,8 @@ import java.io.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Base64;
 import java.util.Scanner;
 
 public class Client {
@@ -44,7 +46,9 @@ public class Client {
                 this.encryptor.setMethod(EncryptionMethod.NONE);
             }
         } else {
-            jsonMsg = new JSONObject().put("msg", this.encryptor.encrypt(msg)).put("from", "Mark");
+            jsonMsg = new JSONObject()
+                    .put("msg", Base64.getEncoder().encodeToString(this.encryptor.encrypt(msg).getBytes()))
+                    .put("from", "Mark");
         }
         this.out.println(jsonMsg.toString());
         return msg;
@@ -64,7 +68,8 @@ public class Client {
             System.out.println("encryption changed to " + this.encryptor.getMethod().value);
             return "encryption";
         }
-        System.out.println(jsonMsg.getString("from") + ": " + this.encryptor.decrypt(jsonMsg.getString("msg")));
+        System.out.print(jsonMsg.getString("from") + ": ");
+        System.out.println(new String(Base64.getDecoder().decode(this.encryptor.decrypt(jsonMsg.getString("msg")))));
         return this.encryptor.decrypt(jsonMsg.getString("msg"));
     }
 
@@ -82,7 +87,7 @@ public class Client {
         Client client = new Client();
         try {
             client.startConnection("127.0.0.1", 8080);
-            client.encryptor = new Encryptor();
+            client.encryptor = new Encryptor(EncryptionMethod.NONE);
             client.diffieHellman();
             Scanner scanInput = new Scanner(System.in);
             System.out.println("===========================================================");
