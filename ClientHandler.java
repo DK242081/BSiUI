@@ -46,28 +46,23 @@ public class ClientHandler extends Thread {
         JSONObject jsonSendMsg = new JSONObject().put("p", (long)23).put("g", (long)5);
         this.out.println(jsonSendMsg.toString());     
         long b = 15;
-        System.out.println("b " + b);
         long p = 23;
-        System.out.println("p " + p);
         long g = 5;
-        System.out.println("g " + g);
         long A = (int) new JSONObject(this.in.readLine()).get("a");
-        System.out.println("A " + A);
         long s = (long) Math.pow(A, b) % p;
         jsonSendMsg = new JSONObject().put("b", Math.pow(g, b) % p);
         this.out.println(jsonSendMsg.toString());     
-        System.out.println("server secret: " + s);
-    }
-
-    public String receiveMessage() throws JSONException, IOException {
-        JSONObject jsonMsg = new JSONObject(this.in.readLine());
-        System.out.println(jsonMsg.getString("from") + ": " + jsonMsg.getString("msg"));
-        return jsonMsg.getString("msg");
     }
 
     public String sendMessage(String msg) {
         JSONObject jsonMsg = new JSONObject().put("msg", msg).put("from", "Daniel");
         this.out.println(jsonMsg.toString());
         return msg;
+    }
+
+    public String receiveMessage() throws JSONException, IOException {
+        JSONObject jsonMsg = new JSONObject(this.in.readLine());
+        System.out.println(jsonMsg.getString("from") + ": " + jsonMsg.getString("msg"));
+        return jsonMsg.getString("msg");
     }
 }

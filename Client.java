@@ -14,7 +14,19 @@ public class Client {
         this.clientSocket = new Socket(ip, port);
         this.out = new PrintWriter(this.clientSocket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
+    }
 
+    public void diffieHellman() throws JSONException, IOException {
+        JSONObject jsonSendMsg = new JSONObject().put("request", "keys");
+        this.out.println(jsonSendMsg.toString());
+        JSONObject jsonReceivedMsg = new JSONObject(this.in.readLine());
+        long a = 6;
+        long p = (int)jsonReceivedMsg.get("p");
+        long g = (int) jsonReceivedMsg.get("g");
+        jsonSendMsg = new JSONObject().put("a", Math.pow(g, a) % p);
+        this.out.println(jsonSendMsg.toString());
+        long B = (int)new JSONObject(this.in.readLine()).get("b");
+        long s = (long) Math.pow(B, a) % p;
     }
 
     public String sendMessage(String msg) {
@@ -38,27 +50,6 @@ public class Client {
             e.printStackTrace();
         }
     }
-
-    public void diffieHellman() throws JSONException, IOException {
-        JSONObject jsonSendMsg = new JSONObject().put("request", "keys");
-        this.out.println(jsonSendMsg.toString());
-        JSONObject jsonReceivedMsg = new JSONObject(this.in.readLine());
-        long a = 6;
-        System.out.println("a " + a);
-        long p = (int)jsonReceivedMsg.get("p");
-        System.out.println("p " + p);
-        long g = (int) jsonReceivedMsg.get("g");
-        System.out.println("g " + g);
-        jsonSendMsg = new JSONObject().put("a", Math.pow(g, a) % p);
-        System.out.println("g^a " + Math.pow(g, a));
-        System.out.println("g^a mod p " + Math.pow(g, a) % p);
-        this.out.println(jsonSendMsg.toString());
-        long B = (int)new JSONObject(this.in.readLine()).get("b");
-        System.out.println("B " + B);
-        long s = (long) Math.pow(B, a) % p;
-        System.out.println("client secret: " + s);
-    }
-
     public static void main(String[] args) {
         Client client = new Client();
         try {
