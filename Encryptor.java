@@ -2,17 +2,32 @@ public class Encryptor {
     private EncryptionMethod method;
     private int key;
 
+    /**
+     * Setter for encryption method
+     * 
+     * @param newMethod new method value
+     */
     public void setMethod(EncryptionMethod newMethod) {
         this.method = newMethod;
     }
 
+    /**
+     * Setter for key
+     * 
+     * @param newKye new key value
+     */
     public void setKey(int newKey) {
         this.key = newKey;
     }
 
+    /**
+     * Method for encrypting string. Uses encryption method and key from object
+     * attributes
+     * 
+     * @param msg string to be encrypted
+     * @return encrypted string
+     */
     public String encrypt(String msg) {
-        this.key = 121411;
-        this.method = EncryptionMethod.CESAR;
         switch (this.method) {
             case NONE:
                 return msg;
@@ -25,6 +40,13 @@ public class Encryptor {
         }
     }
 
+    /**
+     * Method for decrypting string. Uses decryption method and key from object
+     * attributes
+     * 
+     * @param msg string to be decrypted
+     * @return decrypted string
+     */
     public String decrypt(String msg) {
         switch (this.method) {
             case NONE:
@@ -38,6 +60,12 @@ public class Encryptor {
         }
     }
 
+    /**
+     * Method for encrypting/decrypting string using XOR method and key from object attribute
+     * 
+     * @param msg string to be encrypted/decrypted
+     * @return encrypted/decrypted string accordingly
+     */
     private String XOREncrypt(String msg) {
         String encryptedMsg = "";
         for (int i = 0; i < msg.length(); i++) {
@@ -46,6 +74,13 @@ public class Encryptor {
         return encryptedMsg;
     }
 
+
+    /**
+     * Method for encrypting string using Cesar cypher and key from object attribute
+     * 
+     * @param msg string to be encrypted
+     * @return encrypted string 
+     */
     private String CesarEncrypt(String msg) {
         String encryptedMsg = "";
         for (int i = 0; i < msg.length(); i++) {
@@ -62,6 +97,13 @@ public class Encryptor {
         return encryptedMsg;
     }
 
+
+    /**
+     * Method for decrypting string using Cesar cypher and key from object attribute
+     * 
+     * @param msg string to be decrypted
+     * @return decrypted string 
+     */
     private String CesarDecrypt(String msg) {
         String decryptedMsg = "";
         for (int i = 0; i < msg.length(); i++) {
